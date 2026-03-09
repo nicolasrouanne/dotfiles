@@ -1,0 +1,29 @@
+# Path to your Oh My Zsh installation.
+export ZSH="$HOME/.oh-my-zsh"
+
+ZSH_THEME="robbyrussell"
+
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# Java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+
+# Starship prompt
+eval "$(starship init zsh)"
+
+# Try.rb
+eval "$(~/.local/try.rb init ~/dev/tries)"
+
+# Notion API key for Claude Code MCP integration
+export NOTION_API_KEY="{{ onepasswordRead "op://Qraft/chezmoi_notion/api_key" "my.1password.eu" }}"
+
+# Slack MCP tokens
+export SLACK_QRAFT_USER_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_slack-qraft/user_token" "my.1password.eu" }}"
+export SLACK_EPISTO_USER_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_slack-episto/user_token" "my.1password.eu" }}"
