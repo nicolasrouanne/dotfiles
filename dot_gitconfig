@@ -1,0 +1,25 @@
+[user]
+	name = Nicolas Rouanne
+	email = nico.rouanne@gmail.com
+	signingkey = EFB02CA2C65936A9
+[core]
+	editor = nano
+	excludesfile = /Users/nicolasrouanne/.gitignore_global
+[commit]
+	gpgsign = true
+[tag]
+	gpgSign = true
+[push]
+    default = current
+[pull]
+    ff = only
+[fetch]
+    prune = true
+[alias]
+	br = branch -v
+	sweep = "!git branch --merged | egrep -v '(\\*|main)' | xargs -n 1 git branch -d"
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
