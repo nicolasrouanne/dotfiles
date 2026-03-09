@@ -12,20 +12,13 @@ Managed with [chezmoi](https://www.chezmoi.io/) and [1Password](https://1passwor
 ## New machine setup
 
 ```bash
-# Clone and apply dotfiles
-chezmoi init --source ~/dev/dotfiles --apply https://github.com/nicolasrouanne/dotfiles.git
-
-# Set the custom source directory in chezmoi config
-mkdir -p ~/.config/chezmoi
-cat > ~/.config/chezmoi/chezmoi.toml << 'EOF'
-sourceDir = "/Users/nicolasrouanne/dev/dotfiles"
-
-[onepassword]
-  account = "my.1password.eu"
-EOF
+chezmoi init --apply https://github.com/nicolasrouanne/dotfiles.git
 ```
 
-1Password will prompt for biometric auth on first `chezmoi apply`.
+This will:
+1. Clone the repo into `~/dev/dotfiles` (configured via `.chezmoi.toml.tmpl`)
+2. Generate `~/.config/chezmoi/chezmoi.toml` with the 1Password account
+3. Apply all dotfiles, prompting for 1Password biometric auth
 
 ## Daily usage
 
