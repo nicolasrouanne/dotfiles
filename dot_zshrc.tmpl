@@ -44,6 +44,7 @@ export PATH="$PATH:$HOME/.rvm/bin"
 
 # Aliases
 alias cc="claude --worktree"
+alias brew-sync="brew bundle dump --file=~/dev/dotfiles/Brewfile --force --no-vscode --no-uv && echo 'Brewfile updated. Run chezmoi apply or commit to sync.'"
 
 # Try.rb
 eval "$(~/.local/try.rb init ~/dev/tries)"

@@ -1,0 +1,65 @@
+# Taps
+tap "cloudflare/cloudflare"
+tap "getsentry/tools"
+tap "oven-sh/bun"
+tap "steipete/tap"
+
+# CLI tools
+brew "chezmoi"
+brew "gh"
+brew "git-lfs"
+brew "gnupg"
+brew "pinentry-mac"
+brew "starship"
+brew "scalingo"
+brew "tmux"
+brew "yarn"
+brew "uv"
+brew "docker"
+brew "ffmpeg"
+brew "nginx"
+brew "rclone"
+brew "watchman"
+brew "flyctl"
+brew "act"
+brew "actionlint"
+brew "slack-mcp-server"
+brew "getsentry/tools/sentry-cli"
+brew "oven-sh/bun/bun"
+brew "steipete/tap/gogcli"
+brew "flarectl"
+
+# Databases
+brew "postgresql@17", restart_service: :changed
+brew "redis"
+
+# Languages & runtimes
+brew "python@3.12"
+
+# Libraries
+brew "vips"
+brew "libsodium"
+brew "libyaml"
+
+# Casks
+cask "1password-cli"
+cask "bruno"
+cask "claude-code"
+cask "cursor-cli"
+cask "figma"
+cask "font-hack-nerd-font"
+cask "gcloud-cli"
+cask "ghostty"
+cask "google-chrome"
+cask "gpg-suite-no-mail"
+cask "graphiql"
+cask "istat-menus"
+cask "iterm2"
+cask "lookaway"
+cask "ngrok"
+cask "slack-cli"
+cask "sonos"
+cask "spotify"
+cask "visual-studio-code"
+cask "warp"
+cask "zulu@17"
