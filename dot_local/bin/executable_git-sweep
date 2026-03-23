@@ -1,0 +1,33 @@
+#!/bin/bash
+set -euo pipefail
+
+# Remove worktrees whose directories no longer exist
+git worktree prune
+
+# Remove worktrees for merged branches (except origin/main)
+git worktree list --porcelain | while read -r line; do
+  case "$line" in
+    worktree\ *)
+      wt_path="${line#worktree }"
+      ;;
+    branch\ *)
+      branch="${line#branch refs/heads/}"
+      # Skip the main worktree (current repo root)
+      if [ "$wt_path" = "$(git rev-parse --show-toplevel)" ]; then
+        continue
+      fi
+      # Skip origin/main worktree
+      if [ "$wt_path" = "$(git rev-parse --show-toplevel)/origin/main" ]; then
+        continue
+      fi
+      # Check if branch is merged into main
+      if git branch --merged main | grep -qE "^[* +] *${branch}$"; then
+        echo "Removing worktree: $wt_path (branch: $branch)"
+        git worktree remove --force "$wt_path"
+      fi
+      ;;
+  esac
+done
+
+# Delete merged branches (excluding current, worktree, and main)
+git branch --merged | egrep -v '(\*|\+|main)' | xargs -n 1 git branch -d 2>/dev/null || true
