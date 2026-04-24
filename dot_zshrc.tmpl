@@ -58,3 +58,7 @@ export SLACK_EPISTO_USER_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_slack-epi
 
 # Toggl
 export TOGGL_API_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_toggl/api_token" "my.1password.eu" }}"
+
+# Langfuse API keys
+export LANGFUSE_PUBLIC_KEY="{{ onepasswordRead "op://Qraft/chezmoi_langfuse/public_key" "my.1password.eu" }}"
+export LANGFUSE_SECRET_KEY="{{ onepasswordRead "op://Qraft/chezmoi_langfuse/secret_key" "my.1password.eu" }}"
