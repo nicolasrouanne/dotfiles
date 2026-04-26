@@ -49,8 +49,9 @@ alias brew-sync="brew bundle dump --file=~/dev/dotfiles/Brewfile --force --no-vs
 # Try.rb
 eval "$(~/.local/try.rb init ~/dev/tries)"
 
-# Notion API key for Claude Code MCP integration
-export NOTION_API_KEY="{{ onepasswordRead "op://Qraft/chezmoi_notion/api_key" "my.1password.eu" }}"
+# Notion API keys for Claude Code MCP integration
+export NOTION_TOKEN_PERSONAL="{{ onepasswordRead "op://Qraft/chezmoi_notion_personal/api_key" "my.1password.eu" }}"
+export NOTION_TOKEN_WORK="{{ onepasswordRead "op://Qraft/chezmoi_notion_work/api_key" "my.1password.eu" }}"
 
 # Slack MCP tokens
 export SLACK_QRAFT_USER_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_slack-qraft/user_token" "my.1password.eu" }}"
