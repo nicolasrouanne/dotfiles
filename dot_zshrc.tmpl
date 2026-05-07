@@ -49,17 +49,20 @@ alias brew-sync="brew bundle dump --file=~/dev/dotfiles/Brewfile --force --no-vs
 # Try.rb
 eval "$(~/.local/try.rb init ~/dev/tries)"
 
+# 1Password Service Account token (from macOS Keychain)
+export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-code" -s "1password-service-account" -w)
+
 # Notion API keys for Claude Code MCP integration
-export NOTION_TOKEN_PERSONAL="{{ onepasswordRead "op://Qraft/chezmoi_notion_personal/api_key" "my.1password.eu" }}"
-export NOTION_TOKEN_WORK="{{ onepasswordRead "op://Qraft/chezmoi_notion_work/api_key" "my.1password.eu" }}"
+export NOTION_TOKEN_PERSONAL="{{ onepasswordRead "op://AI Agents/chezmoi_notion_personal/api_key" }}"
+export NOTION_TOKEN_WORK="{{ onepasswordRead "op://AI Agents/chezmoi_notion_work/api_key" }}"
 
 # Slack MCP tokens
-export SLACK_QRAFT_USER_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_slack-qraft/user_token" "my.1password.eu" }}"
-export SLACK_EPISTO_USER_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_slack-episto/user_token" "my.1password.eu" }}"
+export SLACK_QRAFT_USER_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_slack-qraft/user_token" }}"
+export SLACK_EPISTO_USER_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_slack-episto/user_token" }}"
 
 # Toggl
-export TOGGL_API_TOKEN="{{ onepasswordRead "op://Qraft/chezmoi_toggl/api_token" "my.1password.eu" }}"
+export TOGGL_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_toggl/api_token" }}"
 
 # Langfuse API keys
-export LANGFUSE_PUBLIC_KEY="{{ onepasswordRead "op://Qraft/chezmoi_langfuse/public_key" "my.1password.eu" }}"
-export LANGFUSE_SECRET_KEY="{{ onepasswordRead "op://Qraft/chezmoi_langfuse/secret_key" "my.1password.eu" }}"
+export LANGFUSE_PUBLIC_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/public_key" }}"
+export LANGFUSE_SECRET_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/secret_key" }}"
