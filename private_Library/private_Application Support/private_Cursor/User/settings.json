@@ -14,29 +14,29 @@
   "markdown.extension.italic.indicator": "_",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[ruby]": {
     "editor.tabSize": 2,
-    "editor.defaultFormatter": "Shopify.ruby-lsp"
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
   },
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
   },
   "security.workspace.trust.untrustedFiles": "open",
   "terminal.integrated.enablePersistentSessions": false,
@@ -49,13 +49,13 @@
     "plaintext": true,
     "markdown": true,
     "scminput": false,
-    "yaml": true
+    "yaml": true,
   },
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll.eslint": "explicit",
   },
   "gitlens.advanced.messages": {
-    "suppressCommitHasNoPreviousCommitWarning": true
+    "suppressCommitHasNoPreviousCommitWarning": true,
   },
   "rubyLsp.enabledFeatures": {
     "codeActions": true,
@@ -71,10 +71,10 @@
     "selectionRanges": true,
     "semanticHighlighting": true,
     "completion": true,
-    "codeLens": true
+    "codeLens": true,
   },
   "rubyLsp.rubyVersionManager": {
-    "identifier": "rvm"
+    "identifier": "rvm",
   },
   "git.openRepositoryInParentFolders": "always",
   "workbench.editor.empty.hint": "hidden",
@@ -89,7 +89,7 @@
     "editor.selectionHighlight": false,
     "editor.suggestSelection": "first",
     "editor.tabCompletion": "onlySnippets",
-    "editor.wordBasedSuggestions": "off"
+    "editor.wordBasedSuggestions": "off",
   },
   "dart.closingLabels": false,
   "scm.showHistoryGraph": false,
@@ -101,10 +101,10 @@
   "gitlens.views.scm.grouped.views": {
     "commits": false,
     "branches": false,
-    "searchAndCompare": false
+    "searchAndCompare": false,
   },
   "rubyLsp.featureFlags": {
-    "all": true
+    "all": true,
   },
   "chat.editing.alwaysSaveWithGeneratedChanges": true,
   "githubPullRequests.pullBranch": "never",
@@ -113,10 +113,15 @@
   "terminal.integrated.fontFamily": "'Hack Nerd Font Mono'",
   "editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace, 'Hack Nerd Font Mono'",
   "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff"
+    "editor.defaultFormatter": "charliermarsh.ruff",
   },
   "editor.formatOnSave": true,
   "editor.largeFileOptimizations": false,
   "editor.accessibilitySupport": "off",
-  "workbench.statusBar.visible": false
+  "workbench.statusBar.visible": false,
+  "search.exclude": {
+    "**/*.claude/worktrees": true,
+  },
+  "git.replaceTagsWhenPull": true,
+  "comments.thread.confirmOnCollapse": "never",
 }

@@ -30,16 +30,22 @@ brew "steipete/tap/gogcli"
 brew "flarectl"
 
 # Databases
+brew "postgresql@14"
 brew "postgresql@17", restart_service: :changed
 brew "redis"
+brew "pgvector"
 
 # Languages & runtimes
 brew "python@3.12"
+
+# Audio / transcription
+brew "whisper-cpp"
 
 # Libraries
 brew "vips"
 brew "libsodium"
 brew "libyaml"
+brew "openssl@1.1"
 
 # Casks
 cask "1password-cli"
