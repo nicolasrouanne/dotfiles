@@ -81,6 +81,50 @@ git push
 chezmoi update
 ```
 
+## Detect drift
+
+Over time, this machine can drift from the repo: a formula installed manually, an app's settings tweaked in its UI, etc. The `dotfiles-doctor` script (installed at `~/.local/bin/dotfiles-doctor`) reports both directions of drift.
+
+```bash
+dotfiles-doctor
+```
+
+It checks:
+
+- **chezmoi**: files under `~` that differ from the source state (a `chezmoi diff` summary)
+- **Brewfile**: formulas/casks installed top-level but missing from `Brewfile`, and the reverse
+
+Exit code is `1` on drift, `0` if clean — usable in scripts.
+
+### Weekly check via launchd
+
+A LaunchAgent (`com.nicolasrouanne.dotfiles-doctor`) is included to run the doctor every Monday at 09:00 and show a macOS notification if drift is found. Load it once per machine:
+
+```bash
+launchctl load ~/Library/LaunchAgents/com.nicolasrouanne.dotfiles-doctor.plist
+```
+
+Run it manually to test:
+
+```bash
+launchctl start com.nicolasrouanne.dotfiles-doctor
+```
+
+Stop / unload:
+
+```bash
+launchctl unload ~/Library/LaunchAgents/com.nicolasrouanne.dotfiles-doctor.plist
+```
+
+Logs are at `/tmp/dotfiles-doctor.log` and `/tmp/dotfiles-doctor.err`.
+
+### Reconciling drift
+
+Once the doctor reports drift, decide direction per item:
+
+- **Source repo → machine** (the repo is authoritative): `chezmoi apply`, or for missing brew packages `brew bundle --file ~/dev/dotfiles/Brewfile`.
+- **Machine → source repo** (the machine is authoritative): `chezmoi re-add <path>` for files, or edit `Brewfile` by hand and commit.
+
 ## 1Password naming convention
 
 Items are stored in the `AI Agents` vault with the prefix `chezmoi_`:

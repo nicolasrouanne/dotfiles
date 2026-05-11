@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# dotfiles-doctor: detect drift between this machine and ~/dev/dotfiles
+set -euo pipefail
+
+DOTFILES="${HOME}/dev/dotfiles"
+BREWFILE="${DOTFILES}/Brewfile"
+NOTIFY=0
+
+for arg in "$@"; do
+  case "$arg" in
+    --notify) NOTIFY=1 ;;
+    -h|--help)
+      cat <<'EOF'
+Usage: dotfiles-doctor [--notify]
+
+Detect drift between this machine and ~/dev/dotfiles:
+  - chezmoi-managed files (zshrc, gitconfig, Cursor settings, etc.)
+  - Brewfile vs installed packages (extras and missing, both ways)
+
+Options:
+  --notify   Emit a macOS notification on drift (for cron/launchd use)
+
+Exit codes:
+  0  in sync
+  1  drift detected
+EOF
+      exit 0
+      ;;
+  esac
+done
+
+drift=0
+report=""
+
+append() { report+="$1"$'\n'; }
+
+# 1. chezmoi drift
+if command -v chezmoi >/dev/null 2>&1; then
+  diff_out=$(chezmoi diff 2>/dev/null || true)
+  if [ -n "$diff_out" ]; then
+    n=$(printf '%s\n' "$diff_out" | grep -c '^diff --git' || true)
+    append "chezmoi: ${n} file(s) differ from source state (run 'chezmoi diff' for details)"
+    drift=$((drift + n))
+  fi
+fi
+
+# 2. Brewfile drift
+if [ -f "$BREWFILE" ] && command -v brew >/dev/null 2>&1; then
+  # Tapped formulas appear as "tap/owner/name" in Brewfile but as bare "name" in
+  # `brew list --formula`. Strip tap prefix on both sides to compare apples-to-apples.
+  strip_tap() { awk -F/ '{print $NF}'; }
+
+  wanted_brews=$(grep -E '^brew "' "$BREWFILE" | sed -E 's/brew "([^"]+)".*/\1/' | strip_tap | sort -u)
+  wanted_casks=$(grep -E '^cask "' "$BREWFILE" | sed -E 's/cask "([^"]+)".*/\1/' | sort -u)
+
+  all_brews=$(brew list --formula -1 2>/dev/null | strip_tap | sort -u)
+  leaves=$(brew leaves 2>/dev/null | strip_tap | sort -u)
+  all_casks=$(brew list --cask 2>/dev/null | sort -u)
+
+  # Extras: installed top-level but absent from Brewfile
+  extra_brews=$(comm -23 <(printf '%s\n' "$leaves") <(printf '%s\n' "$wanted_brews"))
+  extra_casks=$(comm -23 <(printf '%s\n' "$all_casks") <(printf '%s\n' "$wanted_casks"))
+  # Missing: declared in Brewfile but not installed
+  missing_brews=$(comm -23 <(printf '%s\n' "$wanted_brews") <(printf '%s\n' "$all_brews"))
+  missing_casks=$(comm -23 <(printf '%s\n' "$wanted_casks") <(printf '%s\n' "$all_casks"))
+
+  report_block() {
+    local label=$1 list=$2
+    [ -z "$list" ] && return
+    local n
+    n=$(printf '%s\n' "$list" | wc -l | tr -d ' ')
+    append "brew: ${n} ${label}:"
+    append "$(printf '%s\n' "$list" | sed 's/^/    /')"
+    drift=$((drift + n))
+  }
+
+  report_block "formula(s) installed but not in Brewfile" "$extra_brews"
+  report_block "formula(s) in Brewfile but not installed" "$missing_brews"
+  report_block "cask(s) installed but not in Brewfile"    "$extra_casks"
+  report_block "cask(s) in Brewfile but not installed"    "$missing_casks"
+fi
+
+if [ "$drift" -gt 0 ]; then
+  printf '%s' "$report"
+  if [ "$NOTIFY" -eq 1 ]; then
+    osascript -e "display notification \"${drift} drift item(s) — run dotfiles-doctor for details\" with title \"dotfiles-doctor\"" >/dev/null 2>&1 || true
+  fi
+  exit 1
+else
+  echo "No drift detected"
+  exit 0
+fi
