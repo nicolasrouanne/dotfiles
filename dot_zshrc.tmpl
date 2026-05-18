@@ -56,6 +56,11 @@ export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-c
 export NOTION_TOKEN_PERSONAL="{{ onepasswordRead "op://AI Agents/chezmoi_notion_personal/api_key" }}"
 export NOTION_TOKEN_WORK="{{ onepasswordRead "op://AI Agents/chezmoi_notion_work/api_key" }}"
 
+# Notion CLI (ntn) — workspace switching via NOTION_API_TOKEN env override
+# (ntn login is blocked on Plus plan: requests Workers capability bundle)
+ntn-pro()   { NOTION_API_TOKEN="$NOTION_TOKEN_WORK"     ntn "$@"; }
+ntn-perso() { NOTION_API_TOKEN="$NOTION_TOKEN_PERSONAL" ntn "$@"; }
+
 # Slack MCP tokens
 export SLACK_QRAFT_USER_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_slack-qraft/user_token" }}"
 export SLACK_EPISTO_USER_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_slack-episto/user_token" }}"
