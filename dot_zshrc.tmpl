@@ -80,3 +80,9 @@ export QONTO_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto/o
 export CLOUDFLARE_EPISTO_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/api_token" }}"
 export CLOUDFLARE_EPISTO_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/account_id" }}"
 alias tf-episto='CLOUDFLARE_API_TOKEN=$CLOUDFLARE_EPISTO_API_TOKEN terraform'
+
+# Post-bridge MCP credentials
+export POST_BRIDGE_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_postbridge/API key" }}"
+
+# PostHog
+export POSTHOG_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_posthog/API key" }}"
