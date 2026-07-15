@@ -6,6 +6,7 @@ tap "steipete/tap"
 
 # CLI tools
 brew "chezmoi"
+brew "duti"
 brew "gh"
 brew "git-lfs"
 brew "gnupg"

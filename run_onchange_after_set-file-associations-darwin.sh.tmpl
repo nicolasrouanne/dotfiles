@@ -1,0 +1,12 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+
+# Default apps for file types, via duti.
+# com.todesktop.230313mzl4w4u92 = Cursor (ToDesktop bundle id)
+
+# Markdown → Cursor
+# Note: `duti -s ... md all` fails (error -50, dynamic UTI); the official UTI
+# net.daringfireball.markdown covers .md files.
+duti -s com.todesktop.230313mzl4w4u92 net.daringfireball.markdown all
+duti -s com.todesktop.230313mzl4w4u92 markdown all
+{{ end -}}
