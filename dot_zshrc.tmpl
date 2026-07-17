@@ -72,9 +72,13 @@ export TOGGL_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_toggl/api_tok
 export LANGFUSE_PUBLIC_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/public_key" }}"
 export LANGFUSE_SECRET_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/secret_key" }}"
 
-# Qonto MCP credentials
+# Qonto MCP credentials (Qraft = default org for the MCP server)
 export QONTO_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_qraft/api_key" }}"
 export QONTO_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_qraft/organization_id" }}"
+
+# Qonto (gybe) — scoped to avoid mixing with the Qraft org
+export QONTO_GYBE_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_gybe/api_key" }}"
+export QONTO_GYBE_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_gybe/organization_id" }}"
 
 # Cloudflare (episto) — scoped to avoid leaking into other CF accounts
 export CLOUDFLARE_EPISTO_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/api_token" }}"
