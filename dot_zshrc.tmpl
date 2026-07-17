@@ -73,8 +73,8 @@ export LANGFUSE_PUBLIC_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/
 export LANGFUSE_SECRET_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/secret_key" }}"
 
 # Qonto MCP credentials
-export QONTO_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_qonto/api_key" }}"
-export QONTO_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto/organization_id" }}"
+export QONTO_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_qraft/api_key" }}"
+export QONTO_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_qraft/organization_id" }}"
 
 # Cloudflare (episto) — scoped to avoid leaking into other CF accounts
 export CLOUDFLARE_EPISTO_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/api_token" }}"
