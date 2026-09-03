@@ -85,6 +85,10 @@ export CLOUDFLARE_EPISTO_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_c
 export CLOUDFLARE_EPISTO_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/account_id" }}"
 alias tf-episto='CLOUDFLARE_API_TOKEN=$CLOUDFLARE_EPISTO_API_TOKEN terraform'
 
+# Cloudflare (qraft, compte dédié agents) — R2 bucket qraft-routines
+export CLOUDFLARE_QRAFT_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-qraft/account_id" }}"
+export CLOUDFLARE_QRAFT_R2_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-qraft/api_token" }}"
+
 # Post-bridge MCP credentials
 export POST_BRIDGE_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_postbridge/API key" }}"
 
