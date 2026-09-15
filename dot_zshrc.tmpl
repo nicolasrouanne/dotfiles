@@ -89,6 +89,10 @@ alias tf-episto='CLOUDFLARE_API_TOKEN=$CLOUDFLARE_EPISTO_API_TOKEN terraform'
 export CLOUDFLARE_QRAFT_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-qraft/account_id" }}"
 export CLOUDFLARE_QRAFT_R2_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-qraft/api_token" }}"
 
+# Cloudflare (jacanda) — R2 bucket jacanda, zone jacanda.ai
+export CLOUDFLARE_JACANDA_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-jacanda/account_id" }}"
+export CLOUDFLARE_JACANDA_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-jacanda/api_token" }}"
+
 # Post-bridge MCP credentials
 export POST_BRIDGE_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_postbridge/API key" }}"
 
