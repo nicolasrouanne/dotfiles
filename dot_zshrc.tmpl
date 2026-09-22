@@ -52,6 +52,9 @@ eval "$(~/.local/try.rb init ~/dev/tries)"
 # 1Password Service Account token (from macOS Keychain)
 export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-code" -s "1password-service-account" -w)
 
+# Default 1Password vault for op:// references (e.g. project Makefiles)
+export OP_VAULT="AI Agents"
+
 # Notion API keys for Claude Code MCP integration
 export NOTION_TOKEN_PERSONAL="{{ onepasswordRead "op://AI Agents/chezmoi_notion_personal/api_key" }}"
 export NOTION_TOKEN_WORK="{{ onepasswordRead "op://AI Agents/chezmoi_notion_work/api_key" }}"
