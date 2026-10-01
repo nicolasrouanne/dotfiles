@@ -41,8 +41,12 @@ export CLOUDFLARE_QRAFT_R2_TOKEN="{{ op://AI Agents/chezmoi_cloudflare-qraft/api
 export CLOUDFLARE_JACANDA_ACCOUNT_ID="{{ op://AI Agents/chezmoi_cloudflare-jacanda/account_id }}"
 export CLOUDFLARE_JACANDA_API_TOKEN="{{ op://AI Agents/chezmoi_cloudflare-jacanda/api_token }}"
 
-# Post-bridge MCP credentials
+# Post-bridge MCP credentials (POST_BRIDGE_TOKEN: the name config/mcp.json reads)
 export POST_BRIDGE_API_KEY="{{ op://AI Agents/chezmoi_postbridge/API key }}"
+export POST_BRIDGE_TOKEN="$POST_BRIDGE_API_KEY"
+
+# Fireflies MCP
+export FIREFLIES_API_KEY="{{ op://AI Agents/chezmoi_fireflies/api_key }}"
 
 # PostHog
 export POSTHOG_API_KEY="{{ op://AI Agents/chezmoi_posthog/API key }}"
