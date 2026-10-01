@@ -49,3 +49,7 @@ export FIREFLIES_API_KEY="{{ op://AI Agents/chezmoi_fireflies/api_key }}"
 
 # PostHog
 export POSTHOG_API_KEY="{{ op://AI Agents/chezmoi_posthog/API key }}"
+
+# gog: the file keyring's password, read by every gog command on the orca-host (no OS keychain there); the
+# laptop's keychain ignores it
+export GOG_KEYRING_PASSWORD="{{ op://AI Agents/gog_keyring/password }}"
