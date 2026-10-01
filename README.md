@@ -59,12 +59,15 @@ This copies the file into `~/dev/dotfiles/`. If the file contains secrets, renam
 ### Add a secret
 
 1. Create an item in 1Password (`AI Agents` vault) named `chezmoi_<service>`
-2. Rename the source file to `.tmpl` if not already (e.g. `dot_gitconfig` -> `dot_gitconfig.tmpl`)
-3. Replace the hardcoded secret with:
+2. An environment variable (CLIs, agents, MCP servers): one line in `env.tpl`, then `chezmoi apply`. The orca-host reads the same file at its next restart.
 
 ```
-{{ onepasswordRead "op://AI Agents/chezmoi_<service>/<field>" }}
+export SERVICE_TOKEN="{{ op://AI Agents/chezmoi_<service>/<field> }}"
 ```
+
+3. A secret inside another file: rename the source file to `.tmpl` and use `{{ onepasswordRead "op://AI Agents/chezmoi_<service>/<field>" }}`.
+
+`env.tpl` is a template for `op inject`, not for chezmoi, and `op inject` reads every `op://` in it, comments included.
 
 ### Commit and push changes
 
