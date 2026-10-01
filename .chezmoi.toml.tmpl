@@ -1,4 +1,6 @@
+{{- if eq .chezmoi.os "darwin" }}
 sourceDir = "{{ .chezmoi.homeDir }}/dev/dotfiles"
-
+{{ end -}}
+# Service mode on every machine: the laptop and the orca-host both read 1Password with a service-account token.
 [onepassword]
   mode = "service"

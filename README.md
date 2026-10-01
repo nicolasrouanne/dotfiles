@@ -60,7 +60,7 @@ This copies the file into `~/dev/dotfiles/`. If the file contains secrets, renam
 
 1. Create an item in 1Password (`AI Agents` vault) named `chezmoi_<service>`
 2. Rename the source file to `.tmpl` if not already (e.g. `dot_gitconfig` -> `dot_gitconfig.tmpl`)
-3. Replace the hardcoded secret with:
+3. Replace the hardcoded secret with (shared variables go in `dot_config/orca-host/private_env.sh.tmpl`, see [orca-host](#orca-host)):
 
 ```
 {{ onepasswordRead "op://AI Agents/chezmoi_<service>/<field>" }}
@@ -124,6 +124,17 @@ Once the doctor reports drift, decide direction per item:
 
 - **Source repo → machine** (the repo is authoritative): `chezmoi apply`, or for missing brew packages `brew bundle --file ~/dev/dotfiles/Brewfile`.
 - **Machine → source repo** (the machine is authoritative): `chezmoi re-add <path>` for files, or edit `Brewfile` by hand and commit.
+
+## orca-host
+
+The same repo is applied on the orca-host (Linux) by its entrypoint at every start (`DOTFILES_REPO`), and the host sources `~/.config/orca-host/env.sh` before `orca serve`.
+
+- `dot_config/orca-host/private_env.sh.tmpl`: every exported variable agents read. Sourced by `~/.zshrc` on the laptop, and by the host's entrypoint. Exports only, POSIX `sh`: add new secrets here, not in `dot_zshrc.tmpl`.
+- `.chezmoiignore`: on Linux, skips the macOS-only files, `.ssh`, `.gitconfig` and `dotfiles-doctor`; on macOS, skips `.claude`.
+- On Linux only:
+  - `.chezmoiexternal.toml.tmpl` clones the Claude settings repo into `~/claude`;
+  - `~/.claude/CLAUDE.md` and `~/.claude/skills` link to it;
+  - `run_after_orca-host-claude-settings.sh.tmpl` merges its `permissions` into `~/.claude/settings.json` and its MCP servers into `~/.claude.json`, without overwriting existing ones.
 
 ## 1Password naming convention
 

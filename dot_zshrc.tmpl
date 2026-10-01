@@ -52,52 +52,12 @@ eval "$(~/.local/try.rb init ~/dev/tries)"
 # 1Password Service Account token (from macOS Keychain)
 export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-code" -s "1password-service-account" -w)
 
-# Default 1Password vault for op:// references (e.g. project Makefiles)
-export OP_VAULT="AI Agents"
-
-# Notion API keys for Claude Code MCP integration
-export NOTION_TOKEN_PERSONAL="{{ onepasswordRead "op://AI Agents/chezmoi_notion_personal/api_key" }}"
-export NOTION_TOKEN_WORK="{{ onepasswordRead "op://AI Agents/chezmoi_notion_work/api_key" }}"
+# Tokens and the variables agents read, shared with the orca-host
+source ~/.config/orca-host/env.sh
 
 # Notion CLI (ntn) — workspace switching via NOTION_API_TOKEN env override
 # (ntn login is blocked on Plus plan: requests Workers capability bundle)
 ntn-pro()   { NOTION_API_TOKEN="$NOTION_TOKEN_WORK"     ntn "$@"; }
 ntn-perso() { NOTION_API_TOKEN="$NOTION_TOKEN_PERSONAL" ntn "$@"; }
 
-# Slack MCP tokens
-export SLACK_QRAFT_USER_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_slack-qraft/user_token" }}"
-export SLACK_EPISTO_USER_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_slack-episto/user_token" }}"
-
-# Toggl
-export TOGGL_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_toggl/api_token" }}"
-
-# Langfuse API keys
-export LANGFUSE_PUBLIC_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/public_key" }}"
-export LANGFUSE_SECRET_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_langfuse/secret_key" }}"
-
-# Qonto (qraft) — used by the Qonto MCP server
-export QONTO_QRAFT_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_qraft/api_key" }}"
-export QONTO_QRAFT_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_qraft/organization_id" }}"
-
-# Qonto (gybe) — scoped to avoid mixing with the Qraft org
-export QONTO_GYBE_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_gybe/api_key" }}"
-export QONTO_GYBE_ORGANIZATION_ID="{{ onepasswordRead "op://AI Agents/chezmoi_qonto_gybe/organization_id" }}"
-
-# Cloudflare (episto) — scoped to avoid leaking into other CF accounts
-export CLOUDFLARE_EPISTO_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/api_token" }}"
-export CLOUDFLARE_EPISTO_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-episto/account_id" }}"
 alias tf-episto='CLOUDFLARE_API_TOKEN=$CLOUDFLARE_EPISTO_API_TOKEN terraform'
-
-# Cloudflare (qraft, dedicated agents account) — R2 bucket qraft-routines
-export CLOUDFLARE_QRAFT_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-qraft/account_id" }}"
-export CLOUDFLARE_QRAFT_R2_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-qraft/api_token" }}"
-
-# Cloudflare (jacanda) — R2 bucket jacanda, zone jacanda.ai
-export CLOUDFLARE_JACANDA_ACCOUNT_ID="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-jacanda/account_id" }}"
-export CLOUDFLARE_JACANDA_API_TOKEN="{{ onepasswordRead "op://AI Agents/chezmoi_cloudflare-jacanda/api_token" }}"
-
-# Post-bridge MCP credentials
-export POST_BRIDGE_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_postbridge/API key" }}"
-
-# PostHog
-export POSTHOG_API_KEY="{{ onepasswordRead "op://AI Agents/chezmoi_posthog/API key" }}"

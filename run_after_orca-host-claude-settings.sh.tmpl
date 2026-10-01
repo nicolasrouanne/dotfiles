@@ -1,0 +1,18 @@
+{{- if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+# The orca-host: the settings repository merged into the two files Orca and Claude rewrite themselves, so merged,
+# never replaced. `permissions` only (hooks and status lines point at laptop things); MCP servers added without
+# overwriting one already there. Runs after the externals, so after the pull.
+set -eu
+cd "$HOME"
+merge() { jq "$@" > "$file.tmp" && mv "$file.tmp" "$file"; }
+mkdir -p .claude
+if [ -f claude/config/settings.json ]; then
+  file=.claude/settings.json; [ -f "$file" ] || echo '{}' > "$file"
+  merge --slurpfile s claude/config/settings.json '.permissions = $s[0].permissions' "$file"
+fi
+if [ -f claude/config/mcp.json ]; then
+  file=.claude.json; [ -f "$file" ] || echo '{}' > "$file"
+  merge --slurpfile m claude/config/mcp.json '.mcpServers = (($m[0].mcpServers // {}) + (.mcpServers // {}))' "$file"
+fi
+{{ end -}}

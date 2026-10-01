@@ -1,2 +1,15 @@
 README.md
 Brewfile
+{{ if ne .chezmoi.os "darwin" }}
+# The laptop only: macOS apps and agents, Homebrew, the keychain (UseKeychain is fatal to Linux's ssh), a signing
+# key the orca-host does not have.
+Library
+.ssh
+.gitconfig
+.local/bin/dotfiles-doctor
+*-darwin.sh
+{{ end }}
+{{ if ne .chezmoi.os "linux" }}
+# The orca-host only: on the laptop, ~/.claude links to ~/dev/claude by hand.
+.claude
+{{ end }}

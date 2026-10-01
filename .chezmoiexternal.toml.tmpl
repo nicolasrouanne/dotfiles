@@ -1,0 +1,10 @@
+{{ if eq .chezmoi.os "linux" -}}
+# The orca-host: the Claude settings repository, private, pulled at every start. git authenticates through
+# `gh auth git-credential`, with the GH_TOKEN of the host's environment.
+["claude"]
+  type = "git-repo"
+  url = "https://github.com/nicolasrouanne/claude.git"
+  refreshPeriod = "1m"
+  [claude.pull]
+    args = ["--ff-only"]
+{{ end -}}
