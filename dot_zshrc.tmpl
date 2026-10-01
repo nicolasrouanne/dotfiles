@@ -52,8 +52,8 @@ eval "$(~/.local/try.rb init ~/dev/tries)"
 # 1Password Service Account token (from macOS Keychain)
 export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-code" -s "1password-service-account" -w)
 
-# Tokens and the variables CLIs and agents read: env.tpl, resolved by chezmoi (shared with the orca-host)
-source ~/.config/orca-host/env.sh
+# Tokens and the variables CLIs and agents read: env.tpl, resolved by chezmoi
+source ~/.config/env.sh
 
 # Notion CLI (ntn) — workspace switching via NOTION_API_TOKEN env override
 # (ntn login is blocked on Plus plan: requests Workers capability bundle)

@@ -1,6 +1,6 @@
-# The variables every shell, CLI and agent reads, on the laptop and on an orca-host alike. 1Password secret
-# references, resolved by `op inject`: by chezmoi into ~/.config/orca-host/env.sh on the laptop, by the host's
-# entrypoint (ENV_TEMPLATE) on an orca-host. No secret here: one export per variable, its value a secret reference.
+# The variables every shell, CLI and agent reads, as 1Password secret references resolved by `op inject`.
+# Laptop: chezmoi writes them to ~/.config/env.sh, which .zshrc sources. orca-host: ENV_TEMPLATE points at this
+# file. No secret here: one export per variable, its value a secret reference.
 # Not a chezmoi template: chezmoi's double braces would clash with op's.
 
 # Default 1Password vault for secret references (e.g. project Makefiles)
