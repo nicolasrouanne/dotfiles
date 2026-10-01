@@ -51,7 +51,7 @@ brew "openssl@1.1"
 # Casks
 cask "1password-cli"
 cask "bruno"
-cask "claude-code"
+cask "claude-code@latest"
 cask "cursor-cli"
 cask "figma"
 cask "font-hack-nerd-font"
