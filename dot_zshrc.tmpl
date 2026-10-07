@@ -51,6 +51,9 @@ eval "$(~/.local/try.rb init ~/dev/tries)"
 
 # 1Password Service Account token (from macOS Keychain)
 export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-code" -s "1password-service-account" -w)
+# Jacanda's (jacanda.1password.eu, AI Agents vault only):
+#   OP_SERVICE_ACCOUNT_TOKEN=$OP_SERVICE_ACCOUNT_TOKEN_JACANDA op read "op://AI Agents/…"
+export OP_SERVICE_ACCOUNT_TOKEN_JACANDA=$(security find-generic-password -a "sa-claude-code-jacanda" -s "1password-service-account" -w)
 
 # Tokens and the variables CLIs and agents read: env.tpl, resolved by chezmoi
 source ~/.config/env.sh
