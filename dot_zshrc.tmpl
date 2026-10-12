@@ -64,3 +64,6 @@ ntn-pro()   { NOTION_API_TOKEN="$NOTION_TOKEN_WORK"     ntn "$@"; }
 ntn-perso() { NOTION_API_TOKEN="$NOTION_TOKEN_PERSONAL" ntn "$@"; }
 
 alias tf-episto='CLOUDFLARE_API_TOKEN=$CLOUDFLARE_EPISTO_API_TOKEN terraform'
+
+# orca-host: the Makefile reads TFVARS (`?=`), so `make` needs no TFVARS=… argument
+export TFVARS="$HOME/dev/claude/config/orca-host/terraform.tfvars"
