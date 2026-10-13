@@ -1,0 +1,3 @@
+{{- /* ~/dev/claude's config/env.tpl and this repository's env.tpl, resolved once per apply, so a shell makes no 1Password call */ -}}
+{{ output "op" "inject" "-i" (joinPath .chezmoi.homeDir "dev/claude/config/env.tpl") }}
+{{ output "op" "inject" "-i" (joinPath .chezmoi.sourceDir "env.tpl") }}

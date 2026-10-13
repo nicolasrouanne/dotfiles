@@ -1,2 +1,0 @@
-{{- /* env.tpl resolved once per apply, so a shell makes no 1Password call */ -}}
-{{ output "op" "inject" "-i" (joinPath .chezmoi.sourceDir "env.tpl") }}
