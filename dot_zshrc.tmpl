@@ -55,8 +55,9 @@ export OP_SERVICE_ACCOUNT_TOKEN=$(security find-generic-password -a "sa-claude-c
 #   OP_SERVICE_ACCOUNT_TOKEN=$OP_SERVICE_ACCOUNT_TOKEN_JACANDA op read "op://AI Agents/…"
 export OP_SERVICE_ACCOUNT_TOKEN_JACANDA=$(security find-generic-password -a "sa-claude-code-jacanda" -s "1password-service-account" -w)
 
-# Tokens and the variables CLIs and agents read: env.tpl, resolved by chezmoi
-source ~/.config/env.sh
+# Tokens and the variables CLIs and agents read: ~/dev/claude's config/env.tpl and env.tpl, resolved by chezmoi. VAR=value
+# lines, unquoted as the orca-host's env file wants them, so exported one by one: `source` breaks on a space.
+while IFS= read -r line; do [[ $line == [A-Z]*=* ]] && export "$line"; done < ~/.config/env
 
 # Notion CLI (ntn) — workspace switching via NOTION_API_TOKEN env override
 # (ntn login is blocked on Plus plan: requests Workers capability bundle)
