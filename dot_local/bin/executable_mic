@@ -1,0 +1,32 @@
+#!/usr/bin/env swift
+// Mute or unmute every input device, not just the default one: apps like
+// Granola can record from a mic that isn't the system default.
+// Usage: mic mute|unmute
+import CoreAudio
+import Foundation
+
+let args = CommandLine.arguments
+guard args.count == 2, ["mute", "unmute"].contains(args[1]) else {
+  FileHandle.standardError.write("usage: mic mute|unmute\n".data(using: .utf8)!)
+  exit(2)
+}
+var muted: UInt32 = args[1] == "mute" ? 1 : 0
+
+let system = AudioObjectID(kAudioObjectSystemObject)
+var devicesAddr = AudioObjectPropertyAddress(
+  mSelector: kAudioHardwarePropertyDevices,
+  mScope: kAudioObjectPropertyScopeGlobal,
+  mElement: kAudioObjectPropertyElementMain)
+var size: UInt32 = 0
+AudioObjectGetPropertyDataSize(system, &devicesAddr, 0, nil, &size)
+var devices = [AudioDeviceID](repeating: 0, count: Int(size) / MemoryLayout<AudioDeviceID>.size)
+AudioObjectGetPropertyData(system, &devicesAddr, 0, nil, &size, &devices)
+
+for device in devices {
+  var muteAddr = AudioObjectPropertyAddress(
+    mSelector: kAudioDevicePropertyMute,
+    mScope: kAudioDevicePropertyScopeInput,
+    mElement: kAudioObjectPropertyElementMain)
+  guard AudioObjectHasProperty(device, &muteAddr) else { continue }
+  AudioObjectSetPropertyData(device, &muteAddr, 0, nil, UInt32(MemoryLayout<UInt32>.size), &muted)
+}
