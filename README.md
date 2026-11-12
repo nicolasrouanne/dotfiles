@@ -130,11 +130,18 @@ Once the doctor reports drift, decide direction per item:
 
 ## DHCP watchdog
 
-After wake, while the Tailscale tunnel is up, Wi-Fi can get stuck on a self-assigned IPv4 (`169.254.x.x`): DHCP gets no answer, IPv6 keeps working, IPv4-only hosts (github.com) fail. `dhcp-watchdog` runs every 30s from launchd; after a minute stuck, it takes the Tailscale tunnel down, turns Wi-Fi off/on, waits for a lease, and brings the tunnel back up. Load it once per machine:
+After wake, Wi-Fi can get stuck on a self-assigned IPv4 (`169.254.x.x`): macOS gave up on DHCP and only retries minutes later. IPv6 keeps working, IPv4-only hosts (github.com) fail. "Renew DHCP Lease" fixes it at once. `dhcp-watchdog` does the same from launchd every 30s, without dropping Wi-Fi, as soon as it sees a `169.254` address.
+
+Renewing needs root, so allow that one command without a password, then load the agent (once per machine):
 
 ```bash
+echo "$USER ALL=(root) NOPASSWD: /usr/sbin/ipconfig set en0 DHCP" > /tmp/dhcp-renew \
+  && visudo -cf /tmp/dhcp-renew \
+  && sudo install -m 440 -o root -g wheel /tmp/dhcp-renew /etc/sudoers.d/dhcp-renew
 launchctl load ~/Library/LaunchAgents/com.nicolasrouanne.dhcp-watchdog.plist
 ```
+
+Manual renew, same effect: `sudo ipconfig set en0 DHCP`.
 
 Each recovery is logged to `/tmp/dhcp-watchdog.log`.
 
