@@ -128,6 +128,23 @@ Once the doctor reports drift, decide direction per item:
 - **Source repo → machine** (the repo is authoritative): `chezmoi apply`, or for missing brew packages `brew bundle --file ~/dev/dotfiles/Brewfile`.
 - **Machine → source repo** (the machine is authoritative): `chezmoi re-add <path>` for files, or edit `Brewfile` by hand and commit.
 
+## DHCP watchdog
+
+After wake, Wi-Fi can get stuck on a self-assigned IPv4 (`169.254.x.x`): macOS gave up on DHCP and only retries minutes later. IPv6 keeps working, IPv4-only hosts (github.com) fail. "Renew DHCP Lease" fixes it at once. `dhcp-watchdog` does the same from launchd every 30s, without dropping Wi-Fi, as soon as it sees a `169.254` address.
+
+Renewing needs root, so allow that one command without a password, then load the agent (once per machine):
+
+```bash
+echo "$USER ALL=(root) NOPASSWD: /usr/sbin/ipconfig set en0 DHCP" > /tmp/dhcp-renew \
+  && visudo -cf /tmp/dhcp-renew \
+  && sudo install -m 440 -o root -g wheel /tmp/dhcp-renew /etc/sudoers.d/dhcp-renew
+launchctl load ~/Library/LaunchAgents/com.nicolasrouanne.dhcp-watchdog.plist
+```
+
+Manual renew, same effect: `sudo ipconfig set en0 DHCP`.
+
+Each recovery shows a macOS notification and is logged to `/tmp/dhcp-watchdog.log`.
+
 ## 1Password naming convention
 
 Items are stored in the `AI Agents` vault with the prefix `chezmoi_`:

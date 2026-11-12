@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# dhcp-watchdog: renew DHCP when Wi-Fi is stuck on a self-assigned IPv4 (169.254.x.x).
+#
+# After wake, macOS can give up on DHCP and fall back to 169.254 (IPv6 keeps
+# working, so IPv4-only hosts like github.com fail), then retry only minutes
+# later. Renewing the lease, same as "Renew DHCP Lease" in Wi-Fi > Details >
+# TCP/IP, fixes it at once without dropping Wi-Fi. Meant to run from launchd
+# every 30s; needs the passwordless sudo rule from the README.
+set -uo pipefail
+
+IFACE=en0
+LOG=/tmp/dhcp-watchdog.log
+
+ipv4() { ifconfig "$IFACE" 2>/dev/null | awk '/inet /{print $2; exit}'; }
+
+# Log and show a macOS notification.
+report() {
+  echo "$(date '+%F %T') $1" >> "$LOG"
+  osascript -e "display notification \"$1\" with title \"dhcp-watchdog\"" >/dev/null 2>&1 || true
+}
+
+ip=$(ipv4)
+case "$ip" in
+  169.254.*) ;;
+  *) exit 0 ;;
+esac
+
+if ! sudo -n /usr/sbin/ipconfig set "$IFACE" DHCP; then
+  report "Wi-Fi stuck on $ip, renew failed (sudo rule missing?)"
+  exit 1
+fi
+sleep 5
+report "Wi-Fi stuck on $ip, DHCP renewed -> $(ipv4)"
