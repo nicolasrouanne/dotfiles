@@ -128,6 +128,16 @@ Once the doctor reports drift, decide direction per item:
 - **Source repo → machine** (the repo is authoritative): `chezmoi apply`, or for missing brew packages `brew bundle --file ~/dev/dotfiles/Brewfile`.
 - **Machine → source repo** (the machine is authoritative): `chezmoi re-add <path>` for files, or edit `Brewfile` by hand and commit.
 
+## DHCP watchdog
+
+After wake, while the Tailscale tunnel is up, Wi-Fi can get stuck on a self-assigned IPv4 (`169.254.x.x`): DHCP gets no answer, IPv6 keeps working, IPv4-only hosts (github.com) fail. `dhcp-watchdog` runs every 30s from launchd; after a minute stuck, it takes the Tailscale tunnel down, turns Wi-Fi off/on, waits for a lease, and brings the tunnel back up. Load it once per machine:
+
+```bash
+launchctl load ~/Library/LaunchAgents/com.nicolasrouanne.dhcp-watchdog.plist
+```
+
+Each recovery is logged to `/tmp/dhcp-watchdog.log`.
+
 ## 1Password naming convention
 
 Items are stored in the `AI Agents` vault with the prefix `chezmoi_`:

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# dhcp-watchdog: recover Wi-Fi stuck on a self-assigned IPv4 (169.254.x.x).
+#
+# Seen after wake while the Tailscale tunnel is up and en0 has no IPv4 yet:
+# DHCP gets no answer until the tunnel goes down (IPv6 keeps working, so
+# IPv4-only hosts like github.com fail). Fix: tunnel down, Wi-Fi off/on, wait
+# for a lease, tunnel back up. Meant to run from launchd every 30s.
+set -uo pipefail
+
+IFACE=en0
+STATE=/tmp/dhcp-watchdog.state # earliest time we may step in
+LOG=/tmp/dhcp-watchdog.log
+
+note() { echo "$(date '+%F %T') $*" >> "$LOG"; }
+ipv4() { ifconfig "$IFACE" 2>/dev/null | awk '/inet /{print $2; exit}'; }
+
+ip=$(ipv4)
+case "$ip" in
+  169.254.*) ;;
+  *) rm -f "$STATE"; exit 0 ;;
+esac
+
+now=$(date +%s)
+# Give DHCP a minute on its own before stepping in.
+[ -f "$STATE" ] || { echo $((now + 60)) > "$STATE"; exit 0; }
+(( now >= $(cat "$STATE") )) || exit 0
+
+ts_up=0
+scutil --nc status Tailscale 2>/dev/null | head -1 | grep -q '^Connected$' && ts_up=1
+note "en0=$ip, tailscale_tunnel=$ts_up -> recovering"
+
+(( ts_up )) && scutil --nc stop Tailscale
+networksetup -setairportpower "$IFACE" off
+sleep 2
+networksetup -setairportpower "$IFACE" on
+
+for _ in $(seq 1 30); do
+  sleep 2
+  ip=$(ipv4)
+  case "$ip" in ""|169.254.*) ;; *) break ;; esac
+done
+note "after recovery: en0=${ip:-none}"
+
+(( ts_up )) && scutil --nc start Tailscale
+# Still stuck: next attempt in 5 min. Recovered: the next run clears the state.
+echo $((now + 300)) > "$STATE"
