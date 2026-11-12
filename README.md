@@ -143,7 +143,7 @@ launchctl load ~/Library/LaunchAgents/com.nicolasrouanne.dhcp-watchdog.plist
 
 Manual renew, same effect: `sudo ipconfig set en0 DHCP`.
 
-Each recovery is logged to `/tmp/dhcp-watchdog.log`.
+Each recovery shows a macOS notification and is logged to `/tmp/dhcp-watchdog.log`.
 
 ## 1Password naming convention
 

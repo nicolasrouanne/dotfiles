@@ -13,6 +13,12 @@ LOG=/tmp/dhcp-watchdog.log
 
 ipv4() { ifconfig "$IFACE" 2>/dev/null | awk '/inet /{print $2; exit}'; }
 
+# Log and show a macOS notification.
+report() {
+  echo "$(date '+%F %T') $1" >> "$LOG"
+  osascript -e "display notification \"$1\" with title \"dhcp-watchdog\"" >/dev/null 2>&1 || true
+}
+
 ip=$(ipv4)
 case "$ip" in
   169.254.*) ;;
@@ -20,8 +26,8 @@ case "$ip" in
 esac
 
 if ! sudo -n /usr/sbin/ipconfig set "$IFACE" DHCP; then
-  echo "$(date '+%F %T') $IFACE=$ip, renew failed (sudo rule missing?)" >> "$LOG"
+  report "Wi-Fi stuck on $ip, renew failed (sudo rule missing?)"
   exit 1
 fi
 sleep 5
-echo "$(date '+%F %T') $IFACE=$ip, renewed -> $(ipv4)" >> "$LOG"
+report "Wi-Fi stuck on $ip, DHCP renewed -> $(ipv4)"
